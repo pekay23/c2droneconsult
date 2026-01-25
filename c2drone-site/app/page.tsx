@@ -84,17 +84,17 @@ export default function Home() {
   return (
     <main ref={container} className="w-full relative bg-c2white font-sans">
       
-      {/* 1. HERO SECTION */}
+      {/* 1. HERO SECTION (UPDATED IMAGE) */}
       <section className="h-screen w-full flex flex-col justify-center items-center bg-c2black text-white relative overflow-hidden">
         <div className="absolute inset-0 z-0">
             <Image 
-                src="/hero-drone1.jpg"
-                alt="Drone Surveying"
+                src="/hero-drones1.jpg" // <-- UPDATED IMAGE
+                alt="Drone Fleet in Operation"
                 fill
-                className="object-cover opacity-40"
+                className="object-cover opacity-30" // Lowered opacity for better text contrast
                 priority
             />
-            <div className="absolute inset-0 bg-linear-to-b from-c2black/30 via-c2black/50 to-c2black" />
+            <div className="absolute inset-0 bg-linear-to-t from-c2black via-c2black/40 to-transparent" />
         </div>
         <h1 className="text-5xl md:text-8xl font-bold font-heading z-10 text-center tracking-tight leading-tight drop-shadow-2xl">
           Mastering Drone <br /> <span className="text-c2blue">Compliance</span>
@@ -109,22 +109,36 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 2. TRUST STRIP */}
-      <div className="bg-c2black border-b border-gray-800 py-6 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-8 flex flex-wrap justify-center md:justify-between items-center gap-8 text-gray-500 font-bold uppercase tracking-widest text-sm md:text-base">
-            <span>Trusted By Industry Leaders</span>
-            <div className="flex gap-8 opacity-50">
-                <span>GCAA Compliant</span> • <span>ICAO Standards</span> • <span>Safety First</span>
+      {/* 2. TRUST STRIP (UPDATED WITH LOGOS) */}
+      <div className="bg-c2black border-b border-gray-800 py-8">
+        <div className="max-w-7xl mx-auto px-8">
+            <h3 className="text-center text-gray-500 font-semibold uppercase tracking-widest text-sm mb-8">
+                Certified & Compliant With Global Aviation Authorities
+            </h3>
+            <div className="flex flex-wrap justify-center md:justify-around items-center gap-x-12 gap-y-6">
+                {/* GCAA Logo */}
+                <div className="flex items-center gap-3 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all">
+                    <Image src="/gcaa-logo.svg" alt="GCAA Logo" width={40} height={40} className="h-10 w-auto" />
+                    <span className="font-bold text-gray-400">GCAA Compliant</span>
+                </div>
+                {/* ICAO Logo */}
+                <div className="flex items-center gap-3 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all">
+                    <Image src="/icao-logo.svg" alt="ICAO Logo" width={40} height={40} className="h-10 w-auto" />
+                    <span className="font-bold text-gray-400">ICAO Standards</span>
+                </div>
+                {/* ISO Logo */}
+                <div className="flex items-center gap-3 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all">
+                    <Image src="/iso-logo.svg" alt="ISO Logo" width={40} height={40} className="h-10 w-auto" />
+                    <span className="font-bold text-gray-400">ISO Safety Certified</span>
+                </div>
             </div>
         </div>
       </div>
 
-      {/* --- SEAMLESS VIDEO CONTAINER (START) --- */}
+      {/* --- SEAMLESS VIDEO CONTAINER --- */}
       <section className="relative bg-c2black text-white overflow-hidden">
-        {/* Single Video Background for both sections */}
         <SeamlessVideoLoop src="/videos/process.mp4" opacity={0.7} />
-
-        {/* 3. OUR EXPERTISE SECTION (Content Block) */}
+        {/* 3. OUR EXPERTISE */}
         <div ref={expertiseSectionRef} className="relative z-10 max-w-7xl mx-auto px-8 py-32">
           <div className="mb-20 text-center md:text-left max-w-3xl">
              <h2 className="text-sm font-bold tracking-widest text-c2blue uppercase mb-3">Our Expertise</h2>
@@ -145,7 +159,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* 4. PROCESS SECTION (Content Block) */}
+        {/* 4. THE PROCESS */}
         <div className="relative z-10 max-w-7xl mx-auto px-8 py-24">
             <div className="text-center mb-16">
                 <h2 className="text-c2blue font-bold tracking-widest uppercase mb-2">The Process</h2>
@@ -170,8 +184,7 @@ export default function Home() {
             </div>
         </div>
       </section>
-      {/* --- SEAMLESS VIDEO CONTAINER (END) --- */}
-
+      
       {/* 5. REGULATORY SECTION */}
       <section ref={regulatorySectionRef} className="min-h-screen w-full bg-gray-50 flex items-center justify-between px-6 md:px-20 overflow-hidden relative py-20">
         <TechBackground />
