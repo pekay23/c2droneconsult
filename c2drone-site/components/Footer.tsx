@@ -1,3 +1,5 @@
+import Link from "next/link";
+import Image from "next/image"; // Import the Image component
 import { FaLinkedin, FaInstagram, FaPhone, FaEnvelope } from "react-icons/fa";
 
 export default function Footer() {
@@ -5,11 +7,36 @@ export default function Footer() {
     <footer className="bg-c2black text-white py-16 px-8 border-t border-gray-800">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-10">
         
-        {/* BRAND & INFO */}
+        {/* LOGO & INFO (UPDATED) */}
         <div className="mb-8 md:mb-0">
-          <h2 className="text-3xl font-bold tracking-tighter mb-4">
-            C2<span className="text-c2blue">DRONE</span>
-          </h2>
+          
+          {/* Logo Structure copied from Navbar */}
+          <div className="mb-6">
+            <Link href="/" className="flex items-center gap-4 group z-50">
+              <div className="flex items-center gap-3">
+                  <div className="text-4xl font-bold tracking-tighter text-c2blue font-heading leading-none">
+                      C2
+                  </div>
+                  <div className="flex flex-col justify-center">
+                      <span className="text-lg font-bold text-white leading-none tracking-wide font-heading">
+                          DRONE
+                      </span>
+                      <span className="text-[0.6rem] font-medium text-gray-400 uppercase tracking-[0.3em] leading-tight">
+                          CONSULT
+                      </span>
+                  </div>
+              </div>
+              <div className="relative w-10 h-10 transition-transform duration-300 group-hover:rotate-12">
+                  <Image
+                      src="/quad.png"
+                      alt="C2 Drone Consult Quadcopter"
+                      fill
+                      className="object-contain"
+                  />
+              </div>
+            </Link>
+          </div>
+          
           <p className="text-gray-400 text-sm max-w-xs leading-relaxed mb-6">
             Empowering businesses with expert guidance and practical solutions for drone regulatory compliance.
           </p>
@@ -26,17 +53,17 @@ export default function Footer() {
         </div>
 
         {/* LINKS */}
-        <div className="flex flex-col space-y-4">
-            <h3 className="font-bold text-lg">Company</h3>
-            <a href="/about" className="text-gray-400 hover:text-c2blue transition-colors">About Us</a>
-            <a href="/services" className="text-gray-400 hover:text-c2blue transition-colors">Services</a>
-            <a href="/news" className="text-gray-400 hover:text-c2blue transition-colors">News & Insights</a>
-            <a href="/contact" className="text-gray-400 hover:text-c2blue transition-colors">Contact</a>
+        <div className="flex flex-col space-y-4 pt-2">
+            <h3 className="font-bold text-lg font-heading">Company</h3>
+            <Link href="/about" className="text-gray-400 hover:text-c2blue transition-colors">About Us</Link>
+            <Link href="/services" className="text-gray-400 hover:text-c2blue transition-colors">Services</Link>
+            <Link href="/news" className="text-gray-400 hover:text-c2blue transition-colors">News & Insights</Link>
+            <Link href="/contact" className="text-gray-400 hover:text-c2blue transition-colors">Contact</Link>
         </div>
 
         {/* SOCIALS */}
-        <div>
-            <h3 className="font-bold text-lg mb-4">Connect</h3>
+        <div className="pt-2">
+            <h3 className="font-bold text-lg font-heading mb-4">Connect</h3>
             <div className="flex space-x-4 text-2xl">
                 <a 
                   href="https://www.linkedin.com/company/c2-drone-consult/" 
@@ -54,7 +81,7 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-gray-800 mt-12 pt-8 text-center text-sm text-gray-600">
-        © 2025 C2Drone Consult. All Rights Reserved. Founded in Ghana.
+        © {new Date().getFullYear()} C2Drone Consult. All Rights Reserved. Founded in Ghana.
       </div>
     </footer>
   );

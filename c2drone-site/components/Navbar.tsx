@@ -7,6 +7,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FaBars, FaTimes } from "react-icons/fa";
+import Image from "next/image"; // <--- Make sure Image from Next.js is imported
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,10 +17,8 @@ export default function Navbar() {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Close menu when route changes
   useEffect(() => { setIsMenuOpen(false); }, [pathname]);
 
-  // Mobile Menu Animation
   useGSAP(() => {
     if (isMenuOpen) {
       gsap.to(menuRef.current, { x: "0%", duration: 0.5, ease: "power3.out" });
@@ -32,67 +31,75 @@ export default function Navbar() {
     }
   }, [isMenuOpen]);
 
-  // Navbar Scroll Animation (Solid -> Glass)
   useGSAP(() => {
-    // 1. Set Initial State (Solid Dark, White Text)
-    gsap.set(navRef.current, { 
-        backgroundColor: "#1b1b1b", 
-        color: "#ffffff",
-        backdropFilter: "blur(0px)" 
-    });
+    gsap.set(navRef.current, { backgroundColor: "#1b1b1b", backdropFilter: "blur(0px)" });
 
     ScrollTrigger.create({
       start: "top top",
       end: 99999,
       onUpdate: (self) => {
         if (self.scroll() > 50) {
-            // SCROLLED: Semi-Transparent Dark + Blur (Glass Effect)
             gsap.to(navRef.current, { 
-                backgroundColor: "rgba(27, 27, 27, 0.8)", 
+                backgroundColor: "rgba(27, 27, 27, 0.85)", 
                 backdropFilter: "blur(12px)", 
-                duration: 0.3,
-                ease: "power1.out"
+                duration: 0.3
             });
         } else {
-            // TOP: Solid Dark
             gsap.to(navRef.current, { 
                 backgroundColor: "#1b1b1b", 
                 backdropFilter: "blur(0px)", 
-                duration: 0.3,
-                ease: "power1.out"
+                duration: 0.3
             });
         }
       }
     });
-  }, []); // Run once on mount
+  }, []);
 
   return (
     <>
       <nav ref={navRef} className="fixed top-0 left-0 w-full z-50 px-6 md:px-8 py-4 flex items-center justify-between transition-colors">
         
-        {/* 1. MOBILE HAMBURGER (LEFT) */}
+        {/* 1. MOBILE HAMBURGER */}
         <div className="md:hidden flex-1 flex justify-start">
-            <button 
-            onClick={() => setIsMenuOpen(!isMenuOpen)} 
-            className="text-2xl z-50 focus:outline-none p-2 text-white"
-            >
-            {isMenuOpen ? <FaTimes /> : <FaBars />}
+            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-2xl z-50 focus:outline-none p-2 text-white">
+                {isMenuOpen ? <FaTimes /> : <FaBars />}
             </button>
         </div>
 
-        {/* 2. BRAND LOGO (Center on Mobile, Left on Desktop) */}
+        {/* 2. LOGO WITH IMAGE */}
         <div className="flex-1 md:flex-none flex justify-center md:justify-start">
-            <Link href="/" className="flex items-baseline gap-2 group z-50 text-white">
-            <div className="text-2xl font-bold tracking-tighter font-heading">
-                C2<span className="text-c2blue group-hover:text-white transition-colors">DRONE</span>
-            </div>
-            <span className="text-xs font-light tracking-widest opacity-80 uppercase hidden sm:inline-block">
-                Consult
-            </span>
+            <Link href="/" className="flex items-center gap-4 group z-50">
+                
+                {/* Text Part of the Logo */}
+                <div className="flex items-center gap-3">
+                    <div className="text-4xl font-bold tracking-tighter text-c2blue font-heading leading-none">
+                        C2
+                    </div>
+                    <div className="flex flex-col justify-center">
+                        <span className="text-lg font-bold text-white leading-none tracking-wide font-heading group-hover:text-gray-200 transition-colors">
+                            DRONE
+                        </span>
+                        <span className="text-[0.6rem] font-medium text-gray-400 uppercase tracking-[0.3em] leading-tight">
+                            CONSULT
+                        </span>
+                    </div>
+                </div>
+
+                {/* Image Part of the Logo */}
+                <div className="relative w-10 h-10 transition-transform duration-300 group-hover:rotate-12">
+                    <Image
+                        src="/quad.png"
+                        alt="C2 Drone Consult Quadcopter"
+                        fill
+                        className="object-contain" // Ensures image fits perfectly
+                        priority
+                    />
+                </div>
+
             </Link>
         </div>
         
-        {/* 3. DESKTOP LINKS (Center) */}
+        {/* 3. DESKTOP LINKS */}
         <div className="hidden md:flex space-x-8 font-medium absolute left-1/2 transform -translate-x-1/2 text-white">
           <Link href="/services" className="hover:text-c2blue transition-colors">Services</Link>
           <Link href="/about" className="hover:text-c2blue transition-colors">About</Link>
@@ -100,21 +107,17 @@ export default function Navbar() {
           <Link href="/contact" className="hover:text-c2blue transition-colors">Contact</Link>
         </div>
 
-        {/* 4. CTA (Right) */}
+        {/* 4. CTA */}
         <div className="flex-1 md:flex-none flex justify-end">
             <Link href="/contact" className="hidden md:block border border-white px-6 py-2 rounded-full hover:bg-c2blue hover:border-c2blue hover:text-white transition-all font-medium text-sm text-white">
             Get Started
             </Link>
-            {/* Empty div to balance layout on mobile */}
             <div className="md:hidden w-8"></div>
         </div>
       </nav>
 
-      {/* MOBILE MENU OVERLAY */}
-      <div 
-        ref={menuRef}
-        className="fixed inset-0 bg-c2black/95 backdrop-blur-xl z-40 flex flex-col justify-center items-center text-white -translate-x-full"
-      >
+      {/* MOBILE MENU */}
+      <div ref={menuRef} className="fixed inset-0 bg-c2black/95 backdrop-blur-xl z-40 flex flex-col justify-center items-center text-white -translate-x-full">
         <div className="flex flex-col space-y-8 text-center text-3xl font-bold font-heading">
           <Link href="/" className="mobile-link hover:text-c2blue transition-colors">Home</Link>
           <Link href="/services" className="mobile-link hover:text-c2blue transition-colors">Services</Link>
