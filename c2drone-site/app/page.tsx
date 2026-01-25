@@ -9,8 +9,8 @@ import Image from "next/image";
 import Link from "next/link";
 import Services from "@/components/Services";
 import Footer from "@/components/Footer";
-import TechBackground from "@/components/TechBackground"; // <--- NEW IMPORT
-import { FaCheckCircle } from "react-icons/fa";
+import TechBackground from "@/components/TechBackground";
+import { FaCheckCircle, FaImage } from "react-icons/fa"; // Added fallback icon
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -24,7 +24,7 @@ interface Post {
 
 export default function Home() {
   const container = useRef(null);
-  const pinSection = useRef(null);
+  const pinSection = useRef(null); // Rename context: No longer "pinning", but triggering
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
@@ -43,31 +43,32 @@ export default function Home() {
   }, []);
 
   useGSAP(() => {
-    ScrollTrigger.create({
-      trigger: pinSection.current,
-      start: "top top",
-      end: "+=150%",
-      pin: true,
-      scrub: true,
+    // FIX: Removed "pin: true". Now just a smooth parallax animation.
+    // The image card moves slightly slower than the text, creating depth without stopping scroll.
+    gsap.to(".regulatory-card", {
+      y: -50, // Move up slightly while scrolling down
+      scrollTrigger: {
+        trigger: pinSection.current,
+        start: "top bottom", // Start when section enters view
+        end: "bottom top",   // End when section leaves view
+        scrub: 1,            // Smooth scrubbing
+      },
     });
   }, { scope: container });
 
   return (
     <main ref={container} className="w-full relative bg-c2white">
       
-      {/* 1. HERO SECTION WITH IMAGE */}
+      {/* 1. HERO SECTION */}
       <section className="h-screen w-full flex flex-col justify-center items-center bg-c2black text-white relative overflow-hidden">
-        
-        {/* HERO IMAGE BACKGROUND */}
         <div className="absolute inset-0 z-0">
             <Image 
-                src="/hero-drone1.jpg" // Professional Drone Shot
+                src="/hero-drone1.jpg"
                 alt="Drone Surveying"
                 fill
-                className="object-cover opacity-40" // Darkened for text readability
+                className="object-cover opacity-40"
                 priority
             />
-            {/* Gradient Overlay for Fade Effect */}
             <div className="absolute inset-0 bg-linear-to-b from-c2black/30 via-c2black/50 to-c2black" />
         </div>
         
@@ -92,19 +93,18 @@ export default function Home() {
       {/* 2. SERVICES SECTION */}
       <Services />
 
-      {/* 3. PINNED SECTION (THE "WHY PALO ALTO" STYLE) */}
+      {/* 3. REGULATORY SECTION (Fixed Scrolling) */}
       <section 
         ref={pinSection} 
-        className="h-screen w-full bg-gray-50 flex items-center justify-between px-6 md:px-20 overflow-hidden relative"
+        className="min-h-screen w-full bg-gray-50 flex items-center justify-between px-6 md:px-20 overflow-hidden relative py-20"
       >
-        {/* THE "VIDEO" BACKGROUND EFFECT */}
         <TechBackground />
 
-        <div className="w-full md:w-1/2 h-full flex flex-col justify-center md:pl-10 z-10 pointer-events-none">
+        <div className="w-full md:w-1/2 flex flex-col justify-center md:pl-10 z-10 pointer-events-none">
            <h2 className="text-5xl font-bold text-c2black mb-6 drop-shadow-sm">
              Regulatory <span className="text-c2dark">Excellence</span>
            </h2>
-           <p className="text-lg text-gray-600 max-w-lg leading-relaxed mb-8 bg-white/80 p-4 rounded-xl backdrop-blur-sm border border-gray-100">
+           <p className="text-lg text-gray-600 max-w-lg leading-relaxed mb-8 bg-white/80 p-6 rounded-xl backdrop-blur-sm border border-gray-100 shadow-sm">
              We specialize in Drone Registration, ROC/RTO Certification, and special regulatory approvals. 
              Our mission is to empower clients with expert guidance ensuring compliance and smooth operations.
            </p>
@@ -113,8 +113,9 @@ export default function Home() {
            </Link>
         </div>
         
-        <div className="hidden md:flex w-1/2 h-full items-center justify-center z-10">
-           <div className="w-100 h-125 bg-c2blue/90 backdrop-blur-md rounded-3xl shadow-2xl relative flex flex-col items-center justify-center p-10 text-white transform rotate-3 hover:rotate-0 transition-transform duration-700 border border-white/20">
+        <div className="hidden md:flex w-1/2 items-center justify-center z-10">
+           {/* regulatory-card class is targeted by GSAP for parallax */}
+           <div className="regulatory-card w-100 h-125 bg-c2blue/90 backdrop-blur-md rounded-3xl shadow-2xl relative flex flex-col items-center justify-center p-10 text-white transform rotate-3 hover:rotate-0 transition-transform duration-700 border border-white/20">
                 <FaCheckCircle className="text-8xl mb-6 opacity-80" />
                 <h3 className="text-3xl font-bold mb-2">100% Certified</h3>
                 <p className="text-center text-white/80">
@@ -126,7 +127,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. NEWS SECTION */}
+      {/* 4. NEWS SECTION (Fixed Images) */}
       <section id="news" className="min-h-screen bg-c2black text-white py-24 px-8 md:px-20">
         <div className="flex justify-between items-end mb-16 border-b border-gray-700 pb-4">
             <h2 className="text-4xl font-bold">Latest Insights</h2>
@@ -143,7 +144,8 @@ export default function Home() {
            ) : (
              posts.map((post) => (
                <div key={post._id} className="group bg-gray-900 rounded-xl overflow-hidden hover:bg-gray-800 transition-colors cursor-pointer border border-gray-800 hover:border-c2blue/30">
-                 <div className="h-56 w-full relative overflow-hidden">
+                 <div className="h-56 w-full relative overflow-hidden bg-gray-800">
+                   {/* IMAGE FALLBACK LOGIC */}
                    {post.mainImage ? (
                      <Image 
                        src={urlFor(post.mainImage).width(500).url()} 
@@ -152,7 +154,10 @@ export default function Home() {
                        className="object-cover group-hover:scale-110 transition-transform duration-700"
                      />
                    ) : (
-                     <div className="w-full h-full bg-gray-800 flex items-center justify-center text-gray-600">No Image</div>
+                     <div className="w-full h-full flex flex-col items-center justify-center text-gray-600">
+                        <FaImage className="text-4xl mb-2 opacity-50" />
+                        <span className="text-xs uppercase tracking-widest">No Image Available</span>
+                     </div>
                    )}
                  </div>
                  <div className="p-8">
