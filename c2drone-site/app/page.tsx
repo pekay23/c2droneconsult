@@ -7,18 +7,17 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { client, urlFor } from "@/lib/sanity";
 import Image from "next/image";
 import Link from "next/link";
-// Removed Services import
 import Footer from "@/components/Footer";
 import TechBackground from "@/components/TechBackground";
 import SeamlessVideoLoop from "@/components/SeamlessVideoLoop";
 import { 
   FaCheckCircle, FaImage, FaPlane, FaFileContract, FaAward,
-  FaTree, FaIndustry, FaShieldAlt, FaHelicopter // <-- Added imports from Services.tsx
+  FaTree, FaIndustry, FaShieldAlt, FaHelicopter
 } from "react-icons/fa";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// --- Data for the Expertise Section ---
+// Data for the Expertise Section
 const expertiseServices = [
   {
     title: "Precision Agriculture",
@@ -53,7 +52,7 @@ interface Post {
 export default function Home() {
   const container = useRef(null);
   const regulatorySectionRef = useRef(null);
-  const expertiseSectionRef = useRef(null); // <-- New ref for the expertise section
+  const expertiseSectionRef = useRef(null);
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
@@ -68,27 +67,18 @@ export default function Home() {
   }, []);
 
   useGSAP(() => {
-    // Parallax for Regulatory Section
     gsap.to(".regulatory-card", {
       y: -50,
       scrollTrigger: {
         trigger: regulatorySectionRef.current,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: 1,
+        start: "top bottom", end: "bottom top", scrub: 1,
       },
     });
 
-    // Animation for the manual Expertise Section cards
     gsap.from(".expertise-card", {
       scrollTrigger: { trigger: expertiseSectionRef.current, start: "top 80%" },
-      y: 50,
-      opacity: 0,
-      duration: 0.6,
-      stagger: 0.1,
-      ease: "power2.out",
+      y: 50, opacity: 0, duration: 0.6, stagger: 0.1, ease: "power2.out",
     });
-
   }, { scope: container });
 
   return (
@@ -98,7 +88,7 @@ export default function Home() {
       <section className="h-screen w-full flex flex-col justify-center items-center bg-c2black text-white relative overflow-hidden">
         <div className="absolute inset-0 z-0">
             <Image 
-                src="/hero-drone1.jpg"
+                src="https://images.unsplash.com/photo-1579829366248-204fe8413f31?q=80&w=2070&auto=format&fit=crop"
                 alt="Drone Surveying"
                 fill
                 className="object-cover opacity-40"
@@ -129,14 +119,13 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 3. OUR EXPERTISE SECTION (MANUALLY ADDED) */}
-      <section 
-        id="expertise-on-home"
-        ref={expertiseSectionRef} 
-        className="relative py-32 text-white overflow-hidden bg-c2black"
-      >
-        <SeamlessVideoLoop src="/videos/expertise.mp4" opacity={0.6} />
-        <div className="relative z-10 max-w-7xl mx-auto px-8">
+      {/* --- SEAMLESS VIDEO CONTAINER (START) --- */}
+      <section className="relative bg-c2black text-white overflow-hidden">
+        {/* Single Video Background for both sections */}
+        <SeamlessVideoLoop src="/videos/process.mp4" opacity={0.7} />
+
+        {/* 3. OUR EXPERTISE SECTION (Content Block) */}
+        <div ref={expertiseSectionRef} className="relative z-10 max-w-7xl mx-auto px-8 py-32">
           <div className="mb-20 text-center md:text-left max-w-3xl">
              <h2 className="text-sm font-bold tracking-widest text-c2blue uppercase mb-3">Our Expertise</h2>
              <h3 className="text-4xl md:text-6xl font-bold font-heading mb-6">Comprehensive Aerial Intelligence</h3>
@@ -146,26 +135,18 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {expertiseServices.map((service, index) => (
-              <div 
-                key={index} 
-                className="expertise-card group p-8 bg-white/10 border border-white/20 backdrop-blur-lg rounded-2xl hover:bg-white/20 transition-colors duration-300 cursor-pointer shadow-lg hover:shadow-2xl hover:-translate-y-2 flex flex-col"
-              >
+              <div key={index} className="expertise-card group p-8 bg-white/10 border border-white/20 backdrop-blur-lg rounded-2xl hover:bg-white/20 transition-colors duration-300 cursor-pointer shadow-lg hover:shadow-2xl hover:-translate-y-2 flex flex-col">
                 <div className="text-c2blue">{service.icon}</div>
                 <h4 className="text-xl font-bold font-heading mb-4 text-white">{service.title}</h4>
                 <p className="text-gray-300 text-sm leading-relaxed">{service.desc}</p>
-                <div className="mt-auto pt-6 text-sm font-bold text-c2blue flex items-center gap-2">
-                  Learn More <span>→</span>
-                </div>
+                <div className="mt-auto pt-6 text-sm font-bold text-c2blue flex items-center gap-2">Learn More <span>→</span></div>
               </div>
             ))}
           </div>
         </div>
-      </section>
 
-      {/* 4. PROCESS SECTION */}
-      <section className="relative py-24 bg-c2black px-8 overflow-hidden">
-        <SeamlessVideoLoop src="/videos/process.mp4" opacity={0.7} />
-        <div className="relative z-10 max-w-7xl mx-auto">
+        {/* 4. PROCESS SECTION (Content Block) */}
+        <div className="relative z-10 max-w-7xl mx-auto px-8 py-24">
             <div className="text-center mb-16">
                 <h2 className="text-c2blue font-bold tracking-widest uppercase mb-2">The Process</h2>
                 <h3 className="text-4xl font-bold font-heading text-white">Your Path to Flight</h3>
@@ -189,6 +170,7 @@ export default function Home() {
             </div>
         </div>
       </section>
+      {/* --- SEAMLESS VIDEO CONTAINER (END) --- */}
 
       {/* 5. REGULATORY SECTION */}
       <section ref={regulatorySectionRef} className="min-h-screen w-full bg-gray-50 flex items-center justify-between px-6 md:px-20 overflow-hidden relative py-20">
