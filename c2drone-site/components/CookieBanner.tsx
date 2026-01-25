@@ -49,7 +49,7 @@ export default function CookieBanner() {
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-[1000] bg-c2black/90 text-white backdrop-blur-md border-t border-gray-700">
+    <div className="fixed bottom-0 left-0 right-0 z-1000 bg-c2black/90 text-white backdrop-blur-md border-t border-gray-700">
       <div className="max-w-7xl mx-auto px-8 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
         <p className="text-sm text-gray-300 text-center md:text-left">
           We use cookies to enhance your browsing experience and analyze our traffic. By clicking "Accept", you consent to our use of cookies. 
