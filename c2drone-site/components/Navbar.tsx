@@ -16,38 +16,55 @@ export default function Navbar() {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const lightPages = ["/about", "/contact"];
-  const isLightPage = lightPages.includes(pathname);
-
+  // Close menu when route changes
   useEffect(() => { setIsMenuOpen(false); }, [pathname]);
 
+  // Mobile Menu Animation
   useGSAP(() => {
     if (isMenuOpen) {
       gsap.to(menuRef.current, { x: "0%", duration: 0.5, ease: "power3.out" });
-      gsap.fromTo(".mobile-link", { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, stagger: 0.1, delay: 0.2 });
+      gsap.fromTo(".mobile-link", 
+        { y: 50, opacity: 0 }, 
+        { y: 0, opacity: 1, duration: 0.4, stagger: 0.1, delay: 0.2 }
+      );
     } else {
-      gsap.to(menuRef.current, { x: "-100%", duration: 0.5, ease: "power3.in" }); // Slide out to Left now
+      gsap.to(menuRef.current, { x: "-100%", duration: 0.5, ease: "power3.in" });
     }
   }, [isMenuOpen]);
 
+  // Navbar Scroll Animation (Solid -> Glass)
   useGSAP(() => {
-    const initialTextColor = isLightPage ? "#1b1b1b" : "#ffffff";
-    gsap.set(navRef.current, { backgroundColor: "transparent", color: initialTextColor, borderColor: initialTextColor });
+    // 1. Set Initial State (Solid Dark, White Text)
+    gsap.set(navRef.current, { 
+        backgroundColor: "#1b1b1b", 
+        color: "#ffffff",
+        backdropFilter: "blur(0px)" 
+    });
 
     ScrollTrigger.create({
       start: "top top",
       end: 99999,
       onUpdate: (self) => {
         if (self.scroll() > 50) {
-            gsap.to(navRef.current, { backgroundColor: "#1b1b1b", color: "#ffffff", duration: 0.3 });
+            // SCROLLED: Semi-Transparent Dark + Blur (Glass Effect)
+            gsap.to(navRef.current, { 
+                backgroundColor: "rgba(27, 27, 27, 0.8)", 
+                backdropFilter: "blur(12px)", 
+                duration: 0.3,
+                ease: "power1.out"
+            });
         } else {
-            if (!isMenuOpen) {
-                gsap.to(navRef.current, { backgroundColor: "transparent", color: initialTextColor, duration: 0.3 });
-            }
+            // TOP: Solid Dark
+            gsap.to(navRef.current, { 
+                backgroundColor: "#1b1b1b", 
+                backdropFilter: "blur(0px)", 
+                duration: 0.3,
+                ease: "power1.out"
+            });
         }
       }
     });
-  }, [pathname, isMenuOpen]);
+  }, []); // Run once on mount
 
   return (
     <>
@@ -57,8 +74,7 @@ export default function Navbar() {
         <div className="md:hidden flex-1 flex justify-start">
             <button 
             onClick={() => setIsMenuOpen(!isMenuOpen)} 
-            className="text-2xl z-50 focus:outline-none p-2"
-            style={{ color: isMenuOpen ? "white" : "currentColor" }}
+            className="text-2xl z-50 focus:outline-none p-2 text-white"
             >
             {isMenuOpen ? <FaTimes /> : <FaBars />}
             </button>
@@ -66,9 +82,9 @@ export default function Navbar() {
 
         {/* 2. BRAND LOGO (Center on Mobile, Left on Desktop) */}
         <div className="flex-1 md:flex-none flex justify-center md:justify-start">
-            <Link href="/" className="flex items-baseline gap-2 group z-50">
+            <Link href="/" className="flex items-baseline gap-2 group z-50 text-white">
             <div className="text-2xl font-bold tracking-tighter font-heading">
-                C2<span className="text-c2blue group-hover:text-current transition-colors">DRONE</span>
+                C2<span className="text-c2blue group-hover:text-white transition-colors">DRONE</span>
             </div>
             <span className="text-xs font-light tracking-widest opacity-80 uppercase hidden sm:inline-block">
                 Consult
@@ -77,24 +93,24 @@ export default function Navbar() {
         </div>
         
         {/* 3. DESKTOP LINKS (Center) */}
-        <div className="hidden md:flex space-x-8 font-medium absolute left-1/2 transform -translate-x-1/2">
+        <div className="hidden md:flex space-x-8 font-medium absolute left-1/2 transform -translate-x-1/2 text-white">
           <Link href="/services" className="hover:text-c2blue transition-colors">Services</Link>
           <Link href="/about" className="hover:text-c2blue transition-colors">About</Link>
           <Link href="/news" className="hover:text-c2blue transition-colors">News</Link>
           <Link href="/contact" className="hover:text-c2blue transition-colors">Contact</Link>
         </div>
 
-        {/* 4. CTA / RIGHT SPACER (Right) */}
+        {/* 4. CTA (Right) */}
         <div className="flex-1 md:flex-none flex justify-end">
-            <Link href="/contact" className="hidden md:block border border-current px-6 py-2 rounded-full hover:bg-c2blue hover:border-c2blue hover:text-white transition-all font-medium text-sm">
+            <Link href="/contact" className="hidden md:block border border-white px-6 py-2 rounded-full hover:bg-c2blue hover:border-c2blue hover:text-white transition-all font-medium text-sm text-white">
             Get Started
             </Link>
-            {/* Empty div to balance the centered logo on mobile */}
+            {/* Empty div to balance layout on mobile */}
             <div className="md:hidden w-8"></div>
         </div>
       </nav>
 
-      {/* MOBILE MENU OVERLAY (Slide from LEFT) */}
+      {/* MOBILE MENU OVERLAY */}
       <div 
         ref={menuRef}
         className="fixed inset-0 bg-c2black/95 backdrop-blur-xl z-40 flex flex-col justify-center items-center text-white -translate-x-full"
