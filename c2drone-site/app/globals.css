@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+/* 
+  In Tailwind v4, we configure the theme directly here using CSS variables.
+  This replaces the 'extend' section of tailwind.config.ts 
+*/
+@theme {
+  --color-c2blue: #3a68ac;
+  --color-c2dark: #3858ba;
+  --color-c2black: #1b1b1b;
+  --color-c2white: #ffffff;
+}
+
+/* Lenis Smooth Scroll Setup */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
