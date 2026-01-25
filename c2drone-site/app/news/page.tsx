@@ -1,38 +1,36 @@
-"use client";
-
-import { useEffect, useState } from "react";
+// REMOVED "use client" and related hooks
 import { client, urlFor } from "@/lib/sanity";
 import Image from "next/image";
 import Link from "next/link";
 import { FaCalendar, FaArrowRight } from "react-icons/fa";
+import type { Metadata } from 'next';
 
+// --- DYNAMIC METADATA (Works correctly in a Server Component) ---
+export const metadata: Metadata = {
+  title: "News & Insights | C2 Drone Consult",
+  description: "Stay updated with the latest drone regulations, technology trends, and success stories from C2 Drone Consult in Ghana.",
+};
+
+// Interface for our Sanity data
 interface Post {
   _id: string;
   title: string;
   slug: { current: string };
   mainImage: any;
   publishedAt: string;
-  body: any;
 }
 
-export default function NewsPage() {
-  const [posts, setPosts] = useState<Post[]>([]);
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      // Fetch ALL posts, sorted by newest
-      const query = `*[_type == "post"] | order(publishedAt desc) {
-        _id,
-        title,
-        slug,
-        mainImage,
-        publishedAt
-      }`;
-      const data = await client.fetch(query);
-      setPosts(data);
-    };
-    fetchPosts();
-  }, []);
+// --- This is now an ASYNC SERVER COMPONENT ---
+export default async function NewsPage() {
+  
+  // Data is fetched directly on the server before the page is sent to the client.
+  const posts: Post[] = await client.fetch(`*[_type == "post"] | order(publishedAt desc) {
+    _id,
+    title,
+    slug,
+    mainImage,
+    publishedAt
+  }`);
 
   return (
     <main className="bg-c2white min-h-screen pt-32 pb-20 px-8">
@@ -40,7 +38,7 @@ export default function NewsPage() {
         
         {/* HEADER */}
         <div className="mb-16 border-b border-gray-200 pb-8">
-            <h1 className="text-5xl font-bold text-c2black mb-4">News & <span className="text-c2blue">Insights</span></h1>
+            <h1 className="text-5xl font-bold font-heading text-c2black mb-4">News & <span className="text-c2blue">Insights</span></h1>
             <p className="text-gray-500 text-lg max-w-2xl">
                 Stay updated with the latest regulations, technology trends, and success stories from C2Drone Consult.
             </p>
@@ -49,7 +47,7 @@ export default function NewsPage() {
         {/* NEWS GRID */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             {posts.length === 0 ? (
-                <p>Loading articles...</p>
+                <p>No articles found.</p> // Updated message
             ) : (
                 posts.map((post) => (
                     <article key={post._id} className="group flex flex-col h-full border border-gray-100 rounded-2xl hover:shadow-xl transition-shadow duration-300 overflow-hidden bg-white">
@@ -74,7 +72,7 @@ export default function NewsPage() {
                                 {new Date(post.publishedAt).toLocaleDateString()}
                             </div>
                             
-                            <h2 className="text-2xl font-bold text-c2black mb-4 group-hover:text-c2blue transition-colors">
+                            <h2 className="text-2xl font-bold font-heading text-c2black mb-4 group-hover:text-c2blue transition-colors">
                                 {post.title}
                             </h2>
                             

@@ -10,6 +10,7 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import TechBackground from "@/components/TechBackground";
 import SeamlessVideoLoop from "@/components/SeamlessVideoLoop";
+import CTA from "@/components/CTA"; // <-- This import is correct
 import { 
   FaCheckCircle, FaImage, FaPlane, FaFileContract, FaAward,
   FaTree, FaIndustry, FaShieldAlt, FaHelicopter
@@ -84,14 +85,16 @@ export default function Home() {
   return (
     <main ref={container} className="w-full relative bg-c2white font-sans">
       
-      {/* 1. HERO SECTION (UPDATED IMAGE) */}
-      <section className="h-screen w-full flex flex-col justify-center items-center bg-c2black text-white relative overflow-hidden">
+      {/* 1. HERO SECTION */}
+      <section 
+        className="h-screen w-full flex flex-col justify-center items-center bg-c2black text-white relative overflow-hidden pt-24"
+      >
         <div className="absolute inset-0 z-0">
             <Image 
-                src="/hero-drone1.jpg" // <-- UPDATED IMAGE
+                src="/hero-drone1.jpg" // Corrected path
                 alt="Drone Fleet in Operation"
                 fill
-                className="object-cover opacity-30" // Lowered opacity for better text contrast
+                className="object-cover opacity-30"
                 priority
             />
             <div className="absolute inset-0 bg-linear-to-t from-c2black via-c2black/40 to-transparent" />
@@ -109,24 +112,21 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 2. TRUST STRIP (UPDATED WITH LOGOS) */}
+      {/* 2. TRUST STRIP */}
       <div className="bg-c2black border-b border-gray-800 py-8">
         <div className="max-w-7xl mx-auto px-8">
             <h3 className="text-center text-gray-500 font-semibold uppercase tracking-widest text-sm mb-8">
                 Certified & Compliant With Global Aviation Authorities
             </h3>
             <div className="flex flex-wrap justify-center md:justify-around items-center gap-x-12 gap-y-6">
-                {/* GCAA Logo */}
                 <div className="flex items-center gap-3 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all">
                     <Image src="/gcaa-logo.svg" alt="GCAA Logo" width={40} height={40} className="h-10 w-auto" />
                     <span className="font-bold text-gray-400">GCAA Compliant</span>
                 </div>
-                {/* ICAO Logo */}
                 <div className="flex items-center gap-3 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all">
                     <Image src="/icao-logo.svg" alt="ICAO Logo" width={40} height={40} className="h-10 w-auto" />
                     <span className="font-bold text-gray-400">ICAO Standards</span>
                 </div>
-                {/* ISO Logo */}
                 <div className="flex items-center gap-3 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all">
                     <Image src="/iso-logo.svg" alt="ISO Logo" width={40} height={40} className="h-10 w-auto" />
                     <span className="font-bold text-gray-400">ISO Safety Certified</span>
@@ -237,6 +237,9 @@ export default function Home() {
            )}
         </div>
       </section>
+
+      {/* THE FIX: ADD THE CTA COMPONENT HERE */}
+      <CTA />
 
       <Footer />
     </main>

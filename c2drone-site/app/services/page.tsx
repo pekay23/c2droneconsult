@@ -1,90 +1,30 @@
-"use client";
+// REMOVED "use client" - This is now a Server Component
+import type { Metadata } from 'next';
+import ServicesList from '@/components/ServicesList'; // <-- Import our new Client Component
 
-import { useRef } from "react";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { FaTree, FaIndustry, FaShieldAlt, FaHelicopter } from "react-icons/fa"; 
-// 1. CHANGE THE IMPORT to use the better component
-import SeamlessVideoLoop from "@/components/SeamlessVideoLoop";
+// Metadata now works correctly
+export const metadata: Metadata = {
+  title: "Our Services | C2 Drone Consult",
+  description: "Explore our comprehensive drone services including GCAA Registration, ROC/RTO Certification, regulatory approvals, safety management, and strategic consultancy.",
+};
 
-gsap.registerPlugin(ScrollTrigger);
-
-const services = [
-  {
-    title: "Precision Agriculture",
-    desc: "Maximize yields with multispectral crop analysis, identifying issues weeks before they are visible.",
-    icon: <FaTree className="text-4xl mb-4" />,
-  },
-  {
-    title: "Industrial Inspection",
-    desc: "Risk-free structural assessments using millimeter-accurate 3D models of towers, bridges, and pipelines.",
-    icon: <FaIndustry className="text-4xl mb-4" />,
-  },
-  {
-    title: "Aerial Mapping & Surveying",
-    desc: "Topographic data faster than traditional methods, delivering orthomosaics and digital elevation models (DEM).",
-    icon: <FaHelicopter className="text-4xl mb-4" />,
-  },
-  {
-    title: "Security & Surveillance",
-    desc: "24/7 aerial monitoring for sensitive assets with automated perimeter patrols and thermal imaging.",
-    icon: <FaShieldAlt className="text-4xl mb-4" />,
-  },
-];
-
-export default function Services() {
-  const container = useRef(null);
-
-  useGSAP(() => {
-    gsap.from(".service-card", {
-      scrollTrigger: { trigger: container.current, start: "top 80%" },
-      y: 50,
-      opacity: 0,
-      duration: 0.6,
-      stagger: 0.1,
-      ease: "power2.out",
-    });
-  }, { scope: container });
-
+// This is a clean, non-interactive Server Component
+export default function ServicesPage() {
   return (
-    <section 
-      id="services" 
-      ref={container} 
-      className="relative py-32 text-white overflow-hidden bg-c2black"
-    >
-      
-      {/* 2. USE THE SEAMLESS COMPONENT HERE AS WELL */}
-      <SeamlessVideoLoop src="/videos/expertise.mp4" opacity={0.6} />
+    <main className="bg-c2black min-h-screen pt-32 pb-20 text-white">
+      <div className="max-w-6xl mx-auto px-8">
+        
+        <div className="mb-16">
+            <h1 className="text-5xl md:text-6xl font-bold font-heading mb-6">Our Services</h1>
+            <p className="text-xl text-gray-400 max-w-2xl">
+                Comprehensive regulatory and operational support for the modern aviation industry.
+            </p>
+        </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-8">
-        <div className="mb-20 text-center md:text-left max-w-3xl">
-           <h2 className="text-sm font-bold tracking-widest text-c2blue uppercase mb-3">Our Expertise</h2>
-           <h3 className="text-4xl md:text-6xl font-bold font-heading mb-6">Comprehensive Aerial Intelligence</h3>
-           <p className="text-lg text-gray-200 leading-relaxed">
-             We don't just fly drones; we capture actionable data that drives business value.
-           </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {services.map((service, index) => (
-            <div 
-              key={index} 
-              className="service-card group p-8 bg-white/10 border border-white/20 backdrop-blur-lg rounded-2xl hover:bg-white/20 transition-colors duration-300 cursor-pointer shadow-lg hover:shadow-2xl hover:-translate-y-2 flex flex-col"
-            >
-              <div className="text-c2blue">
-                {service.icon}
-              </div>
-              <h4 className="text-xl font-bold font-heading mb-4 text-white">{service.title}</h4>
-              <p className="text-gray-300 text-sm leading-relaxed">
-                {service.desc}
-              </p>
-              <div className="mt-auto pt-6 text-sm font-bold text-c2blue flex items-center gap-2">
-                Learn More <span>→</span>
-              </div>
-            </div>
-          ))}
-        </div>
+        {/* Render the interactive list component here */}
+        <ServicesList />
+
       </div>
-    </section>
+    </main>
   );
 }

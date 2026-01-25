@@ -7,7 +7,7 @@ export default function Footer() {
     <footer className="bg-c2black text-white py-16 px-8 border-t border-gray-800">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-10">
         
-        {/* LOGO & INFO (UPDATED) */}
+        {/* LOGO & INFO */}
         <div className="mb-8 md:mb-0">
           
           {/* Logo Structure copied from Navbar */}
@@ -52,7 +52,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* LINKS */}
+        {/* COMPANY LINKS */}
         <div className="flex flex-col space-y-4 pt-2">
             <h3 className="font-bold text-lg font-heading">Company</h3>
             <Link href="/about" className="text-gray-400 hover:text-c2blue transition-colors">About Us</Link>
@@ -61,10 +61,10 @@ export default function Footer() {
             <Link href="/contact" className="text-gray-400 hover:text-c2blue transition-colors">Contact</Link>
         </div>
 
-        {/* SOCIALS */}
+        {/* SOCIALS & LEGAL (THE UPDATE IS HERE) */}
         <div className="pt-2">
             <h3 className="font-bold text-lg font-heading mb-4">Connect</h3>
-            <div className="flex space-x-4 text-2xl">
+            <div className="flex space-x-4 text-2xl mb-8">
                 <a 
                   href="https://www.linkedin.com/company/c2-drone-consult/" 
                   target="_blank" 
@@ -76,6 +76,13 @@ export default function Footer() {
                 <a href="#" className="text-gray-400 hover:text-[#E1306C] transition-colors">
                     <FaInstagram />
                 </a>
+            </div>
+            
+            {/* Legal Links Section */}
+            <h3 className="font-bold text-lg font-heading mb-4">Legal</h3>
+            <div className="flex flex-col space-y-3 text-sm">
+                <Link href="/privacy-policy" className="text-gray-400 hover:text-c2blue transition-colors">Privacy Policy</Link>
+                <Link href="/terms-of-service" className="text-gray-400 hover:text-c2blue transition-colors">Terms of Service</Link>
             </div>
         </div>
       </div>
