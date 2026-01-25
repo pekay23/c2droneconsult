@@ -88,7 +88,7 @@ export default function Home() {
       <section className="h-screen w-full flex flex-col justify-center items-center bg-c2black text-white relative overflow-hidden">
         <div className="absolute inset-0 z-0">
             <Image 
-                src="/hero-drones1.jpg" // <-- UPDATED IMAGE
+                src="/hero-drone1.jpg" // <-- UPDATED IMAGE
                 alt="Drone Fleet in Operation"
                 fill
                 className="object-cover opacity-30" // Lowered opacity for better text contrast
