@@ -31,3 +31,12 @@ html.lenis, html.lenis body {
 .lenis.lenis-scrolling iframe {
   pointer-events: none;
 }
+/* Add this at the bottom */
+@layer utilities {
+  .font-heading {
+    font-family: var(--font-space), sans-serif;
+  }
+  .font-sans {
+    font-family: var(--font-inter), sans-serif;
+  }
+}

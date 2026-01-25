@@ -1,15 +1,17 @@
-// app/layout.tsx
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Space_Grotesk } from "next/font/google"; // <--- Import Space Grotesk
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
-import Navbar from "@/components/Navbar"; // We will create this next
+import Navbar from "@/components/Navbar";
 
-const inter = Inter({ subsets: ["latin"] });
+// Body font (Readable)
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+// Heading font (Tech/Aero look)
+const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space" });
 
 export const metadata: Metadata = {
-  title: "C2Drone Consult",
-  description: "Premier Consultancy in Ghana",
+  title: "C2 Drone Consult | Premier Aviation Regulatory Services",
+  description: "Expert guidance for GCAA Registration, RTO Certification, and specialized operational approvals in Ghana.",
 };
 
 export default function RootLayout({
@@ -19,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-c2white text-c2black antialiased`}>
+      <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans bg-c2white text-c2black antialiased`}>
         <SmoothScroll>
           <Navbar />
           {children}
