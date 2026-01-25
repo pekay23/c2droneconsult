@@ -88,7 +88,7 @@ export default function Home() {
       <section className="h-screen w-full flex flex-col justify-center items-center bg-c2black text-white relative overflow-hidden">
         <div className="absolute inset-0 z-0">
             <Image 
-                src="https://images.unsplash.com/photo-1579829366248-204fe8413f31?q=80&w=2070&auto=format&fit=crop"
+                src="/hero-drone1.jpg"
                 alt="Drone Surveying"
                 fill
                 className="object-cover opacity-40"
